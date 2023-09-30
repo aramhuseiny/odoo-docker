@@ -12,4 +12,4 @@ This option force to rebuild docekr image from new source. If you use it with `-
 
 ## RUN
 Inorder to run the application, add `127.0.0.1       odoo.dev.apadana.local` to your hosts file.
-Oprn your browser and got to `https://odoo.dev.apadana.local`.
+Open your browser and got to `https://odoo.dev.apadana.local`.
