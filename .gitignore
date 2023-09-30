@@ -1,3 +1,5 @@
-volumes/
+volumes/log/*
+volumes/addons/*
+volumes/store/*
 odoo/
 odoo_16.0/
