@@ -17,9 +17,16 @@ if [[ ${args[@]} = '-init' ]]
 then
     echo "init found"
     docker-compose down -v
-    sudo rm odoo -rf
+    if [ ! -d $service ]
+        then
+        sudo rm odoo -rf
+    fi
     git clone -b $VERSION --depth=$DEPTH https://github.com/odoo/odoo.git odoo
-    sudo rm $VALUMES'/postgresql' -rf
+    if [ ! -d $service ]
+        then
+        sudo rm $VALUMES'/postgresql' -rf
+
+    fi
 fi
 
 if [[ ${args[@]} = '-build' ]]
