@@ -1,0 +1,71 @@
+version: '2'
+services:
+  odoo_db:
+    image: postgres:15
+    container_name: odoo_db
+    user: root
+    ports:
+      - "2345:5432"
+    environment:
+      - POSTGRES_USER=odoo
+      - POSTGRES_PASSWORD=Apadanadev@1      
+      - POSTGRES_DB=postgres
+    restart: always             # run as a service
+    volumes:
+        - ./volumes/postgresql:/var/lib/postgresql/data
+
+  odoo_app:
+    #image: odoo:16
+    image: apadana/odoo_app:1.0.0
+    build:
+      context: .
+    container_name: odoo_app
+    user: root
+    depends_on:
+      - odoo_db
+    ports:
+      - "10016:8069"
+      - "20016:8072" # live chat
+    tty: true
+    # command: --
+    environment:
+      - HOST=odoo_db
+      - USER=odoo
+      - PASSWORD=Apadanadev@1
+    volumes:
+      #- /etc/timezone:/etc/timezone:ro
+      #- /etc/localtime:/etc/localtime:ro
+      # - ./entrypoint.sh:/entrypoint.sh   # if you want to install additional Python packages, uncomment this line!
+      - ./volumes/addons:/mnt/odoo/extra_addons
+      - ./volumes/etc:/etc/odoo
+      - ./volumes/log:/var/log/odoo/
+      - ./odoo:/opt/odoo
+      - ./volumes/store:/root/.local/share/Odoo
+    restart: always             # run as a service
+
+
+  
+  #Nginx Service
+  webserver:
+    depends_on:
+      - odoo_app
+      - odoo_db
+    image: jwilder/nginx-proxy
+    restart: unless-stopped
+    ports:
+      - "80:80"
+      - "443:443"
+    container_name: odoo_webserver
+    tty: true
+    volumes:
+      - /var/run/docker.sock:/tmp/docker.sock
+      - ./nginx/conf.d/:/etc/nginx/conf.d/
+      - ./nginx/certs/:/etc/nginx/certs/
+      - /opt/apadana/visitor/media/:/var/www/visitor/media/
+
+    # extra_hosts:
+    #   - "odoo.dev.apadana.local:192.168.120.2"
+    #   - "backend.dev.apadana.local:192.168.120.3"
+    #   - "admin.dev.apadana.local:192.168.120.5"
+
+    
