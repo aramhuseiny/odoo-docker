@@ -1,6 +1,7 @@
 #!/bin/bash
-#VERSION='saas-16.3'
-VERSION='16.0'
+
+export $(xargs <.env)
+
 DEPTH=10
 VALUMES='./volumes'
 args=()
@@ -20,7 +21,7 @@ then
     then
         sudo rm ./odoo -rf
     fi
-    git clone -b $VERSION --depth=$DEPTH https://github.com/odoo/odoo.git odoo
+    git clone -b $ODOO_VERSION --depth=$DEPTH https://github.com/odoo/odoo.git odoo
     if [ ! -d $VALUMES'/postgresql' ]
         then
         sudo rm $VALUMES'/postgresql' -rf
