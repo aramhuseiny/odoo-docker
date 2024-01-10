@@ -1,4 +1,4 @@
-FROM ubuntu:20.04
+FROM ubuntu:22.04
 
 ENV TZ=Etc/UTC
 ARG DEBIAN_FRONTEND=noninteractive
@@ -22,14 +22,27 @@ RUN apt install -y libjpeg8-dev
 RUN apt install -y libopenjp2-7-dev
 RUN apt install -y liblcms2-dev libwebp-dev libharfbuzz-dev libfribidi-dev libxcb1-dev
 
-RUN wget https://github.com/wkhtmltopdf/wkhtmltopdf/releases/download/0.12.5/wkhtmltox_0.12.5-1.bionic_amd64.deb
+
+RUN wget http://archive.ubuntu.com/ubuntu/pool/main/o/openssl/libssl1.1_1.1.0g-2ubuntu4_amd64.deb
+RUN  dpkg -i ./libssl1.1_1.1.0g-2ubuntu4_amd64.deb
+RUN  rm -i libssl1.1_1.1.0g-2ubuntu4_amd64.deb
+#RUN wget https://github.com/wkhtmltopdf/wkhtmltopdf/releases/download/0.12.5/wkhtmltox_0.12.5-1.bionic_amd64.deb
+COPY wkhtmltox_0.12.5-1.bionic_amd64.deb .
 
 RUN apt install -y ./wkhtmltox_0.12.5-1.bionic_amd64.deb
 
-RUN apt install -y python3-pypdf2 python3-psycopg2
+RUN apt-get install -y python3-pypdf2 python3-psycopg2
 # RUN useradd -m -d /opt/odoo -U -r -s /bin/bash odoo
 
+RUN apt-get install -y npm
+# RUN ln -s /usr/bin/nodejs /usr/bin/node
+RUN npm install -g less less-plugin-clean-css
+RUN apt-get install -y node-less
 
+# install rtl css
+RUN npm install -g rtlcss
+
+# create log directory
 RUN mkdir -p /var/log/odoo/
 
 # RUN chown odoo:odoo -R /var/log/odoo/
