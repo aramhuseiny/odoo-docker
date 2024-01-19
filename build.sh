@@ -12,6 +12,12 @@ do
     i=$((i + 1));
 done
 
+if [ ! -f wkhtmltox_0.12.5-1.bionic_amd64.deb ]
+then 
+    wget https://github.com/wkhtmltopdf/wkhtmltopdf/releases/download/0.12.5/wkhtmltox_0.12.5-1.bionic_amd64.deb
+fi
+
+
 
 if [[ ${args[@]} = '-init' ]]
 then
