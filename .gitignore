@@ -1,5 +1,8 @@
 volumes/log/*
 volumes/addons/*
 volumes/store/*
+volumes/addons_bc/*
 odoo/
 odoo_16.0/
+wkhtmltox_0.12.5-1.bionic_amd64.deb
+.env
